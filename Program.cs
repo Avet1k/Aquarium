@@ -48,6 +48,8 @@ class Pool
         _allFish = new List<Fish>();
     }
 
+    public int FishCount => _allFish.Count;
+
     public void Add(Fish fish)
     {
         if (_allFish.Count == _capacity)
@@ -67,17 +69,14 @@ class Pool
             Console.WriteLine("Такой рыбы в аквариуме нет.");
             return;
         }
-        
+
         _allFish.Remove(fish);
         Console.WriteLine($"Вы вытащили рыбу {fish.Name} из аквариума.");
     }
 
     public Fish GetFishByIndex(int index)
     {
-        if (index < _allFish.Count)
-            return _allFish[index];
-        
-        return null;
+         return _allFish[index];
     }
 
     public void ShowInfo()
@@ -90,11 +89,6 @@ class Pool
             Console.Write(i + 1 + ". ");
             _allFish[i].ShowInfo();
         }
-    }
-
-    public int GetCount()
-    {
-        return _allFish.Count;
     }
 }
 
@@ -180,21 +174,28 @@ class FishLife
         int fishNumber;
         Fish fish;
         
+        if (_aquarium.FishCount == 0)
+        {
+            Console.WriteLine("В аквариуме нет рыб.");
+            return;
+        }
+        
         _aquarium.ShowInfo();
         
         Console.Write("Чтобы поймать рыбку, введите её номер: ");
         
         while (int.TryParse(Console.ReadLine(), out fishNumber) == false ||
-               fishNumber <= 0)
-            Console.WriteLine("Номер должен быть положительным числом: ");
-
+               fishNumber <= 0 ||
+               fishNumber > _aquarium.FishCount)
+            Console.WriteLine($"Номер должен быть положительным числом не больше {_aquarium.FishCount}: ");
+        
         fish = _aquarium.GetFishByIndex(fishNumber - 1);
         _aquarium.Remove(fish);
     }
 
     private void Live()
     {
-        for (int i = 0; i < _aquarium.GetCount(); i++)
+        for (int i = 0; i < _aquarium.FishCount; i++)
             _aquarium.GetFishByIndex(i).GetOlder();
         
         Console.WriteLine("Прошёл месяц...");
