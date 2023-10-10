@@ -23,7 +23,7 @@ class Fish
     
     public string Name { get; }
 
-    public void GetOlder()
+    public void Grow()
     {
         if (_health == 0)
             return;
@@ -196,7 +196,7 @@ class FishLife
     private void Live()
     {
         for (int i = 0; i < _aquarium.FishCount; i++)
-            _aquarium.GetFishByIndex(i).GetOlder();
+            _aquarium.GetFishByIndex(i).Grow();
         
         Console.WriteLine("Прошёл месяц...");
     }
